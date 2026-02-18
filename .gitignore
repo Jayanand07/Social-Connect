@@ -15,3 +15,5 @@ mvnw.cmd
 node_modules/
 dist/
 build/
+build_log*.txt
+*.ps1
