@@ -1,58 +1,89 @@
-# Social_Hub (Full Stack Social Media App)
+# SocialHub (Enterprise-Grade Social Media API)
 
-A modern social media application built with Spring Boot (Backend) and React (Frontend).
+A modern, highly scalable, and secure social media application built with Spring Boot 3 (Backend) and React (Frontend).
 
-## Features
-- User Authentication (JWT)
-- Posts (Like, Comment, Share)
-- Real-time Chat (WebSocket)
-- Stories
-- Private/Public Profiles
-- Follow System
-- Dark Mode UI
+## 🚀 Key Features
 
-## Prerequisites
-- Java 17+
-- Node.js 18+
-- PostgreSQL
-- Maven
+* **User Authentication**: Secure JWT-based stateless authentication with role-based access control.
+* **Core Social Features**: Posts, Comments, Likes, Shares, Private/Public Profiles, and a robust Follow system.
+* **Real-time Engine**: WebSocket-based real-time chat and instant notifications.
+* **Media Management**: Seamless integration with Supabase Storage for fast content delivery.
 
-## Setup
+## 🛡️ Security & Reliability (New in v2.0)
 
-### Environment Variables
-This project uses environment variables for configuration. Create a `.env` file in the root directory or set these in your OS environment.
+We've recently upgraded the backend architecture to support production-level traffic and enterprise-grade observability:
 
-**Required Variables:**
-```env
-DB_URL=jdbc:postgresql://localhost:5432/your_db_name
-DB_USER=your_db_user
-DB_PASS=your_db_password
-JWT_SECRET=your_secure_jwt_secret
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
-MAIL_USERNAME=your_gmail_username
-MAIL_PASSWORD=your_gmail_app_password
-```
+* **Distributed Rate Limiting**: Zero-dependency sliding-window counter protecting endpoints against DDoS and brute-force attacks (`60 req/min` per IP).
+* **Circuit Breaker Pattern**: Resilience4j ensures graceful degradation of downstream services (Chat, Notifications, Email, Media) preventing cascading failures.
+* **API Telemetry & Interceptors**: Custom interceptors track every API call, recording user, method, endpoint, duration, and status.
+* **Database Logging & Auto-cleanup**: Comprehensive JPA entity indexing for lightning-fast API usage queries, paired with a cron-based cleanup service to prevent database bloat.
+* **Prometheus & Actuator Integration**: Full JVM, memory, and custom metrics (latency, error rates, rate limit breaches) exported to Prometheus via Spring Boot Actuator.
+* **Hardened Exception Handling**: Secure, standardized JSON error responses that never leak internal stack traces to the public.
+
+## ⚙️ Tech Stack
 
 ### Backend
-1. Navigate to the root directory.
-2. Run `mvn spring-boot:run`.
+* **Java 17 & Spring Boot 3.2**
+* **Spring Security & JWT**
+* **Spring Data JPA & Hibernate**
+* **Spring WebSocket**
+* **Resilience4j** (Circuit Breaker)
+* **Micrometer & Prometheus** (Observability)
+* **PostgreSQL** (Primary Datastore)
 
 ### Frontend
-1. Navigate to `frontend`.
-2. Create `frontend/.env` with:
-   ```env
-   VITE_API_URL=http://localhost:8080/api
-   ```
-3. Run `npm install`.
-4. Run `npm run dev`.
+* **React 18 & Vite**
+* **Tailwind CSS & Framer Motion** (Dark Mode UI)
 
-## Security
-- Credentials are NOT stored in the codebase.
-- Use environment variables for all secrets.
+## 🛠️ Setup & Local Development
 
-## Tech Stack
-- **Backend**: Java, Spring Boot, Spring Security, Hibernate, WebSocket
-- **Frontend**: React, Vite, Tailwind CSS, Framer Motion
-- **Database**: PostgreSQL
-- **Storage**: Supabase Storage
+### Prerequisites
+* Java 17+
+* Node.js 18+
+* PostgreSQL Database
+* Maven
+
+### Environment Variables
+For optimal security, credentials are never stored in the codebase. Create a `.env` file in `src/main/resources/` or define them in your environment:
+
+```env
+# Database
+DB_URL=jdbc:postgresql://localhost:5432/social_media_db
+DB_USER=postgres
+DB_PASS=your_super_secret_password
+
+# Authentication
+JWT_SECRET=your_base64_encoded_secure_string
+
+# Storage
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+
+# External Services (Optional)
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+```
+
+### Running the Backend
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+The server will start on `http://localhost:8080`.
+* **Health Check**: `http://localhost:8080/actuator/health`
+* **Prometheus Metrics**: `http://localhost:8080/actuator/prometheus`
+
+### Running the Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will start on `http://localhost:5173`.
+
+---
+*Built for scale, secured by design.*
