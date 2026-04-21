@@ -114,7 +114,9 @@ public class ChatGroupService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Verify sender is member
-        if (!group.getMembers().contains(sender)) {
+        boolean isMember = group.getMembers().stream()
+                .anyMatch(member -> member.getId().equals(sender.getId()));
+        if (!isMember) {
             throw new RuntimeException("You are not a member of this group");
         }
 
