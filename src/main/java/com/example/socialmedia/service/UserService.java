@@ -49,6 +49,7 @@ public class UserService {
 
     // ─── Profile ──────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "profiles", key = "#email")
     public UserProfileResponse getProfile(String email) {
         User user = getUserByEmail(email);
@@ -56,6 +57,7 @@ public class UserService {
         return buildProfileResponse(user, info, user); // can view own profile
     }
 
+    @Transactional(readOnly = true)
     public UserProfileResponse getOtherProfile(Long targetId, String requesterEmail) {
         User requester = getUserByEmail(requesterEmail);
         User target = userRepository.findById(targetId)
@@ -217,6 +219,7 @@ public class UserService {
 
     // ─── Follow Requests ──────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public List<FollowUserResponse> getPendingFollowRequests(String email) {
         User user = getUserByEmail(email);
         return followRequestRepository.findByTargetIdAndStatus(user.getId(), FollowRequestStatus.PENDING)
@@ -353,6 +356,7 @@ public class UserService {
         return blockRepository.existsByBlockerAndBlocked(a, b);
     }
 
+    @Transactional(readOnly = true)
     public List<FollowUserResponse> getBlockedUsers(String email) {
         User user = getUserByEmail(email);
         return blockRepository.findByBlockerId(user.getId()).stream()
@@ -362,12 +366,14 @@ public class UserService {
 
     // ─── Followers / Following ────────────────────────────────
 
+    @Transactional(readOnly = true)
     public List<FollowUserResponse> getFollowers(Long userId) {
         return followRepository.findByFollowingId(userId).stream()
                 .map(follow -> mapToFollowUserResponse(follow.getFollower()))
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<FollowUserResponse> getFollowing(Long userId) {
         return followRepository.findByFollowerId(userId).stream()
                 .map(follow -> mapToFollowUserResponse(follow.getFollowing()))

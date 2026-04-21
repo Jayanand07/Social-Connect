@@ -69,12 +69,14 @@ public class PostService {
                 return mapToPostResponse(savedPost);
         }
 
+        @Transactional(readOnly = true)
         @Cacheable(value = "posts")
         public Page<PostResponse> getAllPosts(Pageable pageable) {
                 return postRepository.findAllPublicPosts(pageable)
                                 .map(this::mapToPostResponse);
         }
 
+        @Transactional(readOnly = true)
         public Page<PostResponse> getPostsByUser(Long userId, Pageable pageable,
                         String viewerEmail) {
                 java.util.Objects.requireNonNull(userId, "User ID cannot be null");
@@ -164,6 +166,7 @@ public class PostService {
                 postRepository.delete(post);
         }
 
+        @Transactional(readOnly = true)
         public Page<CommentResponse> getCommentsByPost(Long postId, Pageable pageable) {
                 return commentRepository.findByPostId(postId, pageable)
                                 .map(comment -> {

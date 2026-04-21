@@ -205,7 +205,7 @@ export default function SettingsPage() {
                             {activeTab === 'blocked' && (
                                 <div>
                                     <h2 className="text-white text-lg font-semibold mb-4">Blocked Users</h2>
-                                    <BlockedUsersList onClose={() => { }} />
+                                    <BlockedUsersList onClose={() => setActiveTab('profile')} />
                                 </div>
                             )}
 

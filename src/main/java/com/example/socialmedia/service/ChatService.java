@@ -68,6 +68,7 @@ public class ChatService {
         return toDTO(saved);
     }
 
+    @Transactional(readOnly = true)
     public List<ChatMessageDTO> getConversation(String currentEmail, Long otherUserId) {
         User currentUser = userRepo.findByEmail(currentEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -103,6 +104,7 @@ public class ChatService {
     }
 
     // ===== Chat partners =====
+    @Transactional(readOnly = true)
     public List<ChatPartnerDTO> getChatPartners(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -116,6 +118,7 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<ChatPartnerDTO> searchUsers(String query, String currentEmail) {
         return userRepo.findAll().stream()
                 .filter(u -> !u.getEmail().equals(currentEmail))
