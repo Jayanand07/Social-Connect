@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, ImagePlus, MoreVertical, X, Loader, Smile } from 'lucide-react';
 import ChatBubble from './ChatBubble';
 import ImagePreviewModal from './ImagePreviewModal';
-import { getGroupMessages } from '../../api/groupChat';
+import { getGroupMessages, sendGroupMessageRest } from '../../api/groupChat';
 import { uploadImage } from '../../api/posts';
 import { useToast } from '../Toast';
 import GroupMembersModal from './GroupMembersModal';
@@ -79,10 +79,21 @@ export default function GroupChatWindow({ group, currentUser, onBack, refreshGro
                 senderEmail: currentUser.email
             };
 
-            stompClient.publish({
-                destination: `/app/chat.group.send/${group.groupId}`,
-                body: JSON.stringify(payload)
-            });
+            if (imageUrl || !isSocketConnected || !stompClient || !stompClient.connected) {
+                const sentMsg = await sendGroupMessageRest(group.groupId, text, imageUrl);
+                // If socket is disconnected, we won't get the broadcast back, so update manually
+                if (!isSocketConnected) {
+                    setMessages(prev => {
+                        if (prev.some(m => m.id === sentMsg.data.id)) return prev;
+                        return [...prev, sentMsg.data];
+                    });
+                }
+            } else {
+                stompClient.publish({
+                    destination: `/app/chat.group.send/${group.groupId}`,
+                    body: JSON.stringify(payload)
+                });
+            }
 
             setText('');
             setImageFile(null);

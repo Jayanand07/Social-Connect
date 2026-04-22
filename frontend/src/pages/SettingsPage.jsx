@@ -77,10 +77,10 @@ export default function SettingsPage() {
         <div className="max-w-[935px] mx-auto px-4 py-6">
             {/* Header */}
             <div className="flex items-center gap-3 mb-8">
-                <button onClick={() => navigate(-1)} className="text-white hover:text-[#a8a8a8] cursor-pointer">
+                <button onClick={() => navigate(-1)} className="text-[var(--text-primary)] hover:text-[var(--text-muted)] cursor-pointer">
                     <ArrowLeft size={24} />
                 </button>
-                <h1 className="text-white text-2xl font-bold">Settings</h1>
+                <h1 className="text-[var(--text-primary)] text-2xl font-bold">Settings</h1>
             </div>
 
             <div className="flex gap-8">
@@ -92,8 +92,8 @@ export default function SettingsPage() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer ${activeTab === tab.id
-                                        ? 'bg-[#262626] text-white'
-                                        : 'text-[#a8a8a8] hover:text-white hover:bg-[#1a1a1a]'
+                                        ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)]'
+                                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)]'
                                     }`}
                             >
                                 <tab.icon size={18} />
@@ -113,7 +113,7 @@ export default function SettingsPage() {
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${activeTab === tab.id
                                         ? 'bg-white text-black'
-                                        : 'bg-[#262626] text-[#a8a8a8]'
+                                        : 'bg-[var(--bg-elevated)] text-[var(--text-muted)]'
                                     }`}
                             >
                                 <tab.icon size={14} />
@@ -135,7 +135,7 @@ export default function SettingsPage() {
                         >
                             {activeTab === 'profile' && (
                                 <div className="space-y-5">
-                                    <h2 className="text-white text-lg font-semibold mb-4">Edit Profile</h2>
+                                    <h2 className="text-[var(--text-primary)] text-lg font-semibold mb-4">Edit Profile</h2>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <InputField label="First Name" value={form.firstName} onChange={v => setForm(f => ({ ...f, firstName: v }))} />
@@ -143,16 +143,16 @@ export default function SettingsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-[#a8a8a8] text-xs font-semibold mb-1.5">Bio</label>
+                                        <label className="block text-[var(--text-muted)] text-xs font-semibold mb-1.5">Bio</label>
                                         <textarea
                                             value={form.bio}
                                             onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
                                             rows={3}
                                             maxLength={150}
-                                            className="w-full bg-[#1a1a1a] border border-[#363636] rounded-lg px-3 py-2.5 text-white text-sm outline-none focus:border-[#0095f6] transition-colors resize-none"
+                                            className="w-full bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2.5 text-white text-sm outline-none focus:border-[var(--accent)] transition-colors resize-none"
                                             placeholder="Write something about yourself..."
                                         />
-                                        <p className="text-right text-[10px] text-[#a8a8a8] mt-1">{form.bio.length}/150</p>
+                                        <p className="text-right text-[10px] text-[var(--text-muted)] mt-1">{form.bio.length}/150</p>
                                     </div>
 
                                     <InputField label="Website" value={form.website} onChange={v => setForm(f => ({ ...f, website: v }))} placeholder="https://example.com" />
@@ -160,11 +160,11 @@ export default function SettingsPage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <InputField label="Location" value={form.location} onChange={v => setForm(f => ({ ...f, location: v }))} />
                                         <div>
-                                            <label className="block text-[#a8a8a8] text-xs font-semibold mb-1.5">Gender</label>
+                                            <label className="block text-[var(--text-muted)] text-xs font-semibold mb-1.5">Gender</label>
                                             <select
                                                 value={form.gender}
                                                 onChange={e => setForm(f => ({ ...f, gender: e.target.value }))}
-                                                className="w-full bg-[#1a1a1a] border border-[#363636] rounded-lg px-3 py-2.5 text-white text-sm outline-none focus:border-[#0095f6] transition-colors cursor-pointer"
+                                                className="w-full bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2.5 text-white text-sm outline-none focus:border-[var(--accent)] transition-colors cursor-pointer"
                                             >
                                                 <option value="">Prefer not to say</option>
                                                 <option value="Male">Male</option>
@@ -183,7 +183,7 @@ export default function SettingsPage() {
                                         whileTap={{ scale: 0.97 }}
                                         onClick={handleSave}
                                         disabled={saving}
-                                        className="w-full py-3 rounded-lg bg-[#0095f6] text-white font-semibold text-sm hover:bg-[#1aa1f7] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                                        className="w-full py-3 rounded-lg bg-[var(--accent)] text-white font-semibold text-sm hover:bg-[var(--accent-hover)] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                                     >
                                         {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                                         {saving ? 'Saving...' : 'Save Changes'}
@@ -193,7 +193,7 @@ export default function SettingsPage() {
 
                             {activeTab === 'privacy' && (
                                 <div>
-                                    <h2 className="text-white text-lg font-semibold mb-4">Privacy Settings</h2>
+                                    <h2 className="text-[var(--text-primary)] text-lg font-semibold mb-4">Privacy Settings</h2>
                                     <PrivacyToggle profile={profile} onUpdate={loadProfile} />
                                 </div>
                             )}
@@ -204,30 +204,30 @@ export default function SettingsPage() {
 
                             {activeTab === 'blocked' && (
                                 <div>
-                                    <h2 className="text-white text-lg font-semibold mb-4">Blocked Users</h2>
+                                    <h2 className="text-[var(--text-primary)] text-lg font-semibold mb-4">Blocked Users</h2>
                                     <BlockedUsersList onClose={() => setActiveTab('profile')} />
                                 </div>
                             )}
 
                             {activeTab === 'account' && (
                                 <div className="space-y-4">
-                                    <h2 className="text-white text-lg font-semibold mb-4">Account</h2>
-                                    <div className="p-4 rounded-xl bg-[#1a1a1a] border border-[#262626]">
+                                    <h2 className="text-[var(--text-primary)] text-lg font-semibold mb-4">Account</h2>
+                                    <div className="p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <Shield size={20} className="text-[#0095f6]" />
-                                            <p className="text-white text-sm font-semibold">Account Type</p>
+                                            <Shield size={20} className="text-[var(--accent)]" />
+                                            <p className="text-[var(--text-primary)] text-sm font-semibold">Account Type</p>
                                         </div>
-                                        <p className="text-[#a8a8a8] text-xs ml-8">
+                                        <p className="text-[var(--text-muted)] text-xs ml-8">
                                             {profile?.isPrivateAccount ? 'Private Account' : 'Public Account'}
                                         </p>
-                                        <p className="text-[#a8a8a8] text-[11px] mt-2 ml-8">
+                                        <p className="text-[var(--text-muted)] text-[11px] mt-2 ml-8">
                                             You can change your account type in the Privacy tab.
                                         </p>
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-[#1a1a1a] border border-[#262626]">
-                                        <p className="text-white text-sm font-semibold mb-1">Email</p>
-                                        <p className="text-[#a8a8a8] text-sm">{profile?.email}</p>
+                                    <div className="p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
+                                        <p className="text-[var(--text-primary)] text-sm font-semibold mb-1">Email</p>
+                                        <p className="text-[var(--text-muted)] text-sm">{profile?.email}</p>
                                     </div>
                                 </div>
                             )}
@@ -249,13 +249,13 @@ export default function SettingsPage() {
 function InputField({ label, value, onChange, type = 'text', placeholder = '' }) {
     return (
         <div>
-            <label className="block text-[#a8a8a8] text-xs font-semibold mb-1.5">{label}</label>
+            <label className="block text-[var(--text-muted)] text-xs font-semibold mb-1.5">{label}</label>
             <input
                 type={type}
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 placeholder={placeholder}
-                className="w-full bg-[#1a1a1a] border border-[#363636] rounded-lg px-3 py-2.5 text-white text-sm outline-none focus:border-[#0095f6] transition-colors"
+                className="w-full bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2.5 text-[var(--text-primary)] text-sm outline-none focus:border-[var(--accent)] transition-colors"
             />
         </div>
     );

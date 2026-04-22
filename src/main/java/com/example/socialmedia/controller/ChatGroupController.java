@@ -64,6 +64,15 @@ public class ChatGroupController {
         return ResponseEntity.ok(groupService.getGroupMessages(groupId, authentication.getName()));
     }
 
+    @PostMapping("/{groupId}/messages/send")
+    public ResponseEntity<ChatGroupMessageDTO> sendGroupMessageRest(
+            @PathVariable Long groupId, @RequestBody GroupMessageRequest request, Authentication authentication) {
+        ChatGroupMessageDTO message = groupService.sendGroupMessage(
+                groupId, request.getContent(), request.getImageUrl(), authentication.getName());
+        messagingTemplate.convertAndSend("/topic/group-" + groupId, message);
+        return ResponseEntity.ok(message);
+    }
+
     @GetMapping("/{groupId}/members")
     public ResponseEntity<List<UserProfileResponse>> getGroupMembers(@PathVariable Long groupId) {
         return ResponseEntity.ok(groupService.getGroupMembers(groupId));

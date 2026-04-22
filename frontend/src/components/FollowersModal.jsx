@@ -75,7 +75,7 @@ function UserRow({ user: u, delay, onUserClick }) {
                         {u.name || (u.firstName && u.lastName ? `${u.firstName} ${u.lastName}` : u.email)}
                     </p>
                 </Link>
-                {u.email && <p className="text-[11px] text-[var(--text-muted)] truncate">{u.email}</p>}
+                {u.email && <p className="text-[11px] text-[var(--text-muted)] truncate">@{u.email.split('@')[0]}</p>}
             </div>
             <motion.button
                 whileHover={{ scale: 1.05 }}

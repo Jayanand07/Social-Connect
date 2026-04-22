@@ -96,7 +96,7 @@ export default function UserListSidebar({ conversations, activeUserId, onSelectU
                                 <div className="flex-1 min-w-0">
                                     <p className="text-[13px] font-medium text-[var(--text-primary)] truncate">{user.name}</p>
                                     <p className="text-[10px] text-[var(--text-muted)] truncate">
-                                        {online ? <span className="text-emerald-400">Online</span> : user.email}
+                                        {online ? <span className="text-emerald-400">Online</span> : "Offline"}
                                     </p>
                                 </div>
                                 {activeUserId === user.id && (

@@ -89,7 +89,7 @@ export default function Navbar({ newNotification }) {
                                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
                                         className="absolute right-0 mt-2 bg-[var(--bg-elevated)] border border-[var(--border-color)] rounded-xl p-1 min-w-[200px] z-50 shadow-xl"
                                     >
-                                        <p className="px-3 py-2 text-[11px] text-[var(--text-muted)] truncate border-b border-[var(--border-color)] mb-1">{user?.email}</p>
+                                        <p className="px-3 py-2 text-[11px] text-[var(--text-muted)] truncate border-b border-[var(--border-color)] mb-1">@{user?.email?.split('@')[0]}</p>
                                         <NavLink
                                             to="/profile"
                                             onClick={() => setDropdownOpen(false)}

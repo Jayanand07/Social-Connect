@@ -18,4 +18,5 @@ export const removeGroupMember = (groupId, userId) =>
     api.post(`/chat/groups/${groupId}/members/remove`, { userId });
 
 // Messaging (REST fallback, though WS is preferred)
-// WS destination: /app/chat.group.send/{groupId}
+export const sendGroupMessageRest = (groupId, content, imageUrl) => 
+    api.post(`/chat/groups/${groupId}/messages/send`, { content, imageUrl });

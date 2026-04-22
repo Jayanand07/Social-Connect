@@ -33,8 +33,8 @@ export default function ProfilePreview() {
                         </div>
                     </div>
                     <div className="min-w-0">
-                        <p className="text-[14px] font-semibold text-[var(--text-primary)] truncate">{displayName || user?.email?.split('@')[0]}</p>
-                        <p className="text-[13px] text-[var(--text-muted)] truncate">{displayName ? user?.email?.split('@')[0] : user?.email}</p>
+                        <p className="text-[14px] font-semibold text-[var(--text-primary)] truncate">{displayName}</p>
+                        <p className="text-[13px] text-[var(--text-muted)] truncate">@{user?.email?.split('@')[0]}</p>
                     </div>
                 </div>
 
