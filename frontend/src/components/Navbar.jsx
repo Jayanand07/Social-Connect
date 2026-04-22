@@ -38,28 +38,13 @@ export default function Navbar({ newNotification }) {
                     {/* Left — Logo */}
                     <div className="flex items-center gap-3 lg:hidden">
                         <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-                          <div style={{
-                            width:'34px', height:'34px', borderRadius:'10px',
-                            background:'var(--accent)', position:'relative', overflow:'hidden', flexShrink:0,
-                            boxShadow:'0 4px 12px var(--accent-glow)'
-                          }}>
-                              <div style={{
-                                position:'absolute', width:'21px', height:'19px',
-                                background:'var(--bg-primary)', borderRadius:'5px 5px 5px 2px',
-                                top:'6px', left:'6px'
-                              }}/>
-                              <div style={{
-                                position:'absolute', width:'21px', height:'19px',
-                                background:'rgba(0,0,0,0.3)', borderRadius:'5px 5px 2px 5px',
-                                bottom:'6px', right:'6px'
-                              }}/>
-                          </div>
                           <span style={{
-                            fontFamily:'Syne, sans-serif', fontWeight:800,
-                            fontSize:'18px', letterSpacing:'-0.02em', lineHeight:1
+                            fontFamily: "'Grand Hotel', cursive",
+                            fontSize: '32px', 
+                            lineHeight: 1
                           }}>
                             <span style={{color:'var(--text-primary)'}}>Friends</span>
-                            <span className="bg-gradient-to-r from-[var(--gradient-1)] to-[var(--gradient-3)] bg-clip-text text-transparent drop-shadow-sm">Hub</span>
+                            <span className="text-[var(--accent)]">Hub</span>
                           </span>
                         </div>
                     </div>
