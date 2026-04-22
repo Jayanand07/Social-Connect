@@ -2,32 +2,15 @@
 
 @layer base {
   :root {
-    /* FriendsHub Creative Theme */
-    --bg-primary: #000000;
-    --bg-secondary: #0a0a0a;
-    --bg-card: #121212;
-    --bg-elevated: #1e1e1e;
-    --bg-hover: #262626;
+    /* FriendsHub Hub Amber Theme */
+    --accent: #E8824A;
+    --accent-hover: #cf703b;
+    --accent-light: rgba(232, 130, 74, 0.15);
+    --accent-glow: rgba(232, 130, 74, 0.25);
 
-    --border-color: #262626;
-    --border-hover: #363636;
-
-    --text-primary: #fafafa;
-    --text-secondary: #a8a8a8;
-    --text-muted: #737373;
-
-    /* Instagram-like Brand Colors */
-    --accent: #0095f6;
-    --accent-hover: #1877f2;
-    --accent-light: rgba(0, 149, 246, 0.15);
-    --accent-glow: rgba(0, 149, 246, 0.25);
-
-    --gradient-1: #833ab4;
-    /* Purple */
-    --gradient-2: #fd1d1d;
-    /* Red */
-    --gradient-3: #fcb045;
-    /* Orange */
+    --gradient-1: #E8824A;
+    --gradient-2: #da6f35;
+    --gradient-3: #fca06f;
 
     --danger: #ed4956;
     --success: #00e676;
@@ -36,7 +19,39 @@
     --radius: 0.75rem;
     --radius-lg: 1rem;
 
-    --glass-bg: rgba(18, 18, 18, 0.85);
+    /* Light mode defaults */
+    --bg-primary: #F5F3EB;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-elevated: #f4f4f5;
+    --bg-hover: #e4e4e7;
+
+    --border-color: #e4e4e7;
+    --border-hover: #d4d4d8;
+
+    --text-primary: #1A1A1A;
+    --text-secondary: #52525b;
+    --text-muted: #71717a;
+
+    --glass-bg: rgba(245, 243, 235, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark {
+    --bg-primary: #0A0A0A;
+    --bg-secondary: #000000;
+    --bg-card: #1A1A1A;
+    --bg-elevated: #262626;
+    --bg-hover: #333333;
+
+    --border-color: #262626;
+    --border-hover: #363636;
+
+    --text-primary: #fafafa;
+    --text-secondary: #a8a8a8;
+    --text-muted: #737373;
+
+    --glass-bg: rgba(26, 26, 26, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);
   }
 
@@ -58,6 +73,7 @@
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Custom scrollbar */

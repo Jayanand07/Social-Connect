@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, MessageCircle, Settings, Users, LogOut, PlusSquare } from 'lucide-react';
+import { Home, Search, MessageCircle, Settings, Users, LogOut, PlusSquare, Moon, Sun } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { getProfile } from '../api/users';
@@ -12,6 +13,7 @@ const links = [
 
 export default function Sidebar({ onCreatePost }) {
     const { user, logout } = useAuth();
+    const { isDarkMode, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
 
@@ -34,12 +36,12 @@ export default function Sidebar({ onCreatePost }) {
                 <div onClick={() => navigate('/')} className="cursor-pointer hover:opacity-80 transition-opacity" style={{ display:'flex', alignItems:'center', gap:'12px', padding:'4px 0' }}>
                     <div style={{
                         width:'42px', height:'42px', borderRadius:'13px',
-                        background:'#E91E8C', position:'relative', overflow:'hidden', flexShrink:0,
-                        boxShadow:'0 4px 16px rgba(233,30,140,0.35)'
+                        background:'var(--accent)', position:'relative', overflow:'hidden', flexShrink:0,
+                        boxShadow:'0 4px 16px var(--accent-glow)'
                     }}>
                         <div style={{
                             position:'absolute', width:'26px', height:'23px',
-                            background:'#000000', borderRadius:'6px 6px 6px 2px',
+                            background:'var(--bg-primary)', borderRadius:'6px 6px 6px 2px',
                             top:'8px', left:'7px'
                         }}/>
                         <div style={{
@@ -52,8 +54,8 @@ export default function Sidebar({ onCreatePost }) {
                         fontFamily:'Syne, sans-serif', fontWeight:700,
                         fontSize:'20px', letterSpacing:'-0.02em', lineHeight:1
                     }}>
-                        <span style={{color:'#FFFFFF'}}>Friends</span>
-                        <span style={{color:'#E91E8C'}}>Hub</span>
+                        <span style={{color:'var(--text-primary)'}}>Friends</span>
+                        <span style={{color:'var(--accent)'}}>Hub</span>
                     </span>
                 </div>
             </div>
@@ -172,7 +174,18 @@ export default function Sidebar({ onCreatePost }) {
             </nav>
 
             {/* Footer */}
-            <div className="mt-auto">
+            <div className="px-4 mt-6 pt-6 border-t border-[var(--border-color)] space-y-2">
+                {/* Theme Toggle */}
+                <button
+                    onClick={toggleTheme}
+                    className="flex items-center gap-4 w-full px-4 py-3 text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] rounded-xl transition-all group"
+                >
+                    <div className="relative group-hover:scale-110 transition-transform duration-300">
+                        {isDarkMode ? <Sun size={22} className="text-[#fdcb6e]" /> : <Moon size={22} className="text-[var(--accent)]" />}
+                    </div>
+                    <span className="font-semibold text-[15px]">{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
+                
                 <button
                     onClick={handleLogout}
                     className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-[15px] text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] transition-all w-full cursor-pointer hover:translate-x-1"

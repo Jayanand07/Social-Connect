@@ -60,8 +60,8 @@ export default function ProfilePreview() {
                 <div className="mt-6 text-[11px] text-[var(--text-muted)]/50 leading-relaxed">
                     <p>
                         <span style={{fontFamily:'Syne,sans-serif', fontWeight:700, fontSize:'13px'}}>
-                            <span style={{color:'#FFFFFF'}}>Friends</span>
-                            <span style={{color:'#E91E8C'}}>Hub</span>
+                            <span style={{color:'var(--text-primary)'}}>Friends</span>
+                            <span style={{color:'var(--accent)'}}>Hub</span>
                         </span> © 2026
                     </p>
                 </div>

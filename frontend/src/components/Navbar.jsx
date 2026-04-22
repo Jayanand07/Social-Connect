@@ -1,12 +1,14 @@
 import { useAuth } from '../context/AuthContext';
-import { Home, User, LogOut, Menu, X, Search, MessageCircle } from 'lucide-react';
+import { Home, User, LogOut, Menu, X, Search, MessageCircle, Sun, Moon, Bell } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NotificationBell from './NotificationBell';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar({ newNotification }) {
     const { user, logout } = useAuth();
+    const { isDarkMode, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -38,26 +40,26 @@ export default function Navbar({ newNotification }) {
                         <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
                           <div style={{
                             width:'34px', height:'34px', borderRadius:'10px',
-                            background:'#E91E8C', position:'relative', overflow:'hidden', flexShrink:0,
-                            boxShadow:'0 4px 12px rgba(233,30,140,0.35)'
+                            background:'var(--accent)', position:'relative', overflow:'hidden', flexShrink:0,
+                            boxShadow:'0 4px 12px var(--accent-glow)'
                           }}>
-                            <div style={{
-                              position:'absolute', width:'21px', height:'18px',
-                              background:'#000000', borderRadius:'5px 5px 5px 2px',
-                              top:'6px', left:'6px'
-                            }}/>
-                            <div style={{
-                              position:'absolute', width:'21px', height:'18px',
-                              background:'rgba(0,0,0,0.3)', borderRadius:'5px 5px 2px 5px',
-                              bottom:'6px', right:'6px'
-                            }}/>
+                              <div style={{
+                                position:'absolute', width:'21px', height:'19px',
+                                background:'var(--bg-primary)', borderRadius:'5px 5px 5px 2px',
+                                top:'6px', left:'6px'
+                              }}/>
+                              <div style={{
+                                position:'absolute', width:'21px', height:'19px',
+                                background:'rgba(0,0,0,0.3)', borderRadius:'5px 5px 2px 5px',
+                                bottom:'6px', right:'6px'
+                              }}/>
                           </div>
                           <span style={{
                             fontFamily:'Syne, sans-serif', fontWeight:700,
                             fontSize:'18px', letterSpacing:'-0.02em', lineHeight:1
                           }}>
-                            <span style={{color:'#FFFFFF'}}>Friends</span>
-                            <span style={{color:'#E91E8C'}}>Hub</span>
+                            <span style={{color:'var(--text-primary)'}}>Friends</span>
+                            <span style={{color:'var(--accent)'}}>Hub</span>
                           </span>
                         </div>
                     </div>
@@ -77,7 +79,11 @@ export default function Navbar({ newNotification }) {
                     </div>
 
                     {/* Right — Actions */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-3">
+                        <button onClick={toggleTheme} className="btn-icon bg-[var(--bg-elevated)] hover:scale-110 transition-transform">
+                            {isDarkMode ? <Sun size={20} className="text-[#fdcb6e]" /> : <Moon size={20} className="text-[var(--accent)]" />}
+                        </button>
+                        
                         <NotificationBell newNotification={newNotification} />
 
                         {/* Avatar Dropdown */}

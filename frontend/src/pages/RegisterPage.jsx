@@ -48,17 +48,17 @@ export default function RegisterPage() {
                     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'12px', marginBottom:'32px' }}>
                       <div style={{
                         width:'56px', height:'56px', borderRadius:'16px',
-                        background:'#E91E8C', position:'relative', overflow:'hidden',
-                        boxShadow:'0 8px 24px rgba(233,30,140,0.4)'
+                        background:'var(--accent)', position:'relative', overflow:'hidden',
+                        boxShadow:'0 8px 24px var(--accent-glow)'
                       }}>
                         <div style={{
                           position:'absolute', width:'34px', height:'30px',
-                          background:'#000000', borderRadius:'8px 8px 8px 3px',
+                          background:'var(--bg-primary)', borderRadius:'8px 8px 8px 3px',
                           top:'10px', left:'9px'
                         }}/>
                         <div style={{
                           position:'absolute', width:'34px', height:'30px',
-                          background:'rgba(0,0,0,0.3)', borderRadius:'8px 8px 3px 8px',
+                          background:'rgba(0,0,0,0.25)', borderRadius:'8px 8px 3px 8px',
                           bottom:'10px', right:'9px'
                         }}/>
                       </div>
@@ -66,8 +66,8 @@ export default function RegisterPage() {
                         fontFamily:'Syne, sans-serif', fontWeight:700,
                         fontSize:'28px', letterSpacing:'-0.02em'
                       }}>
-                        <span style={{color:'#FFFFFF'}}>Friends</span>
-                        <span style={{color:'#E91E8C'}}>Hub</span>
+                        <span style={{color:'var(--text-primary)'}}>Friends</span>
+                        <span style={{color:'var(--accent)'}}>Hub</span>
                       </span>
                     </div>
                     <h1 className="text-2xl font-bold">Create account</h1>
