@@ -49,7 +49,7 @@ export default function RegisterPage() {
                         <UserPlus size={26} className="text-white" />
                     </div>
                     <h1 className="text-2xl font-bold">Create account</h1>
-                    <p className="text-[12px] text-[var(--text-muted)] mt-1">Join the SocialHub community</p>
+                    <p className="text-[12px] text-[var(--text-muted)] mt-1">Join the FriendsHub community</p>
                 </div>
 
                 {error && (

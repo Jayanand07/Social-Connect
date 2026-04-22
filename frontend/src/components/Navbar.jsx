@@ -35,7 +35,7 @@ export default function Navbar({ newNotification }) {
                 <div className="max-w-[935px] mx-auto px-4 h-[60px] flex items-center justify-between gap-4">
                     {/* Left — Logo */}
                     <div className="flex items-center gap-3 lg:hidden">
-                        <span className="text-lg font-bold">Social_Hub</span>
+                        <span className="text-lg font-bold">FriendsHub</span>
                     </div>
 
                     {/* Center — Search (desktop) */}

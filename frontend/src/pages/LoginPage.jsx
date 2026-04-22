@@ -74,7 +74,7 @@ export default function LoginPage() {
                         {isForgotPassword ? 'Reset Password' : 'Welcome back'}
                     </h1>
                     <p className="text-[12px] text-[var(--text-muted)] mt-1">
-                        {isForgotPassword ? 'Enter your email to receive a reset link' : 'Sign in to your SocialHub account'}
+                        {isForgotPassword ? 'Enter your email to receive a reset link' : 'Sign in to your FriendsHub account'}
                     </p>
                 </div>
 

@@ -35,7 +35,7 @@ export default function Sidebar({ onCreatePost }) {
                     className="text-2xl font-bold bg-gradient-to-r from-[var(--gradient-1)] via-[var(--gradient-2)] to-[var(--gradient-3)] bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => navigate('/')}
                 >
-                    Social_Hub
+                    FriendsHub
                 </h1>
             </div>
 

@@ -1,4 +1,4 @@
-# SocialHub (Enterprise-Grade Social Media API)
+# FriendsHub (Enterprise-Grade Social Media API)
 
 A modern, highly scalable, and secure social media application built with Spring Boot 3 (Backend) and React (Frontend).
 
