@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
 
 import java.security.Key;
 import java.util.Date;
@@ -23,6 +24,19 @@ public class JwtService {
 
     @Value("${jwt.expiration}")
     private long jwtExpiration;
+
+    @PostConstruct
+    public void validateJwtSecret() {
+        if (secretKey == null || secretKey.isBlank()) {
+            throw new IllegalStateException(
+                "STARTUP FAILED: jwt.secret is not set. Set JWT_SECRET environment variable.");
+        }
+        if (secretKey.length() < 64) {
+            throw new IllegalStateException(
+                "STARTUP FAILED: jwt.secret must be at least 64 characters long. " +
+                "Generate one with: openssl rand -base64 64");
+        }
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

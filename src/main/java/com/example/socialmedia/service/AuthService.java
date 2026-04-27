@@ -1,5 +1,9 @@
 package com.example.socialmedia.service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import com.example.socialmedia.dto.AuthResponse;
 import com.example.socialmedia.dto.LoginRequest;
 import com.example.socialmedia.dto.RegisterRequest;
@@ -49,13 +53,14 @@ public class AuthService {
             throw new RuntimeException("Email already in use");
         }
 
-        String verificationToken = UUID.randomUUID().toString();
+        String rawToken = UUID.randomUUID().toString();
+        String hashedToken = hashToken(rawToken);
 
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .verificationStatus(VerificationStatus.PENDING)
-                .verificationToken(verificationToken)
+                .verificationToken(hashedToken)
                 .tokenExpiry(LocalDateTime.now().plusHours(24))
                 .build();
 
@@ -69,7 +74,7 @@ public class AuthService {
 
         userInfoRepository.save(userInfo);
 
-        emailService.sendVerificationEmail(savedUser.getEmail(), verificationToken, request.getFirstName());
+        emailService.sendVerificationEmail(savedUser.getEmail(), rawToken, request.getFirstName());
 
         externalApiService.notifyUserRegistered(savedUser);
 
@@ -102,7 +107,8 @@ public class AuthService {
     }
 
     public String verifyAccount(String token) {
-        User user = userRepository.findByVerificationToken(token)
+        String hashedIncoming = hashToken(token);
+        User user = userRepository.findByVerificationToken(hashedIncoming)
                 .orElseThrow(() -> new RuntimeException("Invalid verification token"));
 
         if (user.getVerificationStatus() == VerificationStatus.VERIFIED) {
@@ -111,6 +117,13 @@ public class AuthService {
 
         if (user.getTokenExpiry() != null && user.getTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Verification token has expired. Please register again.");
+        }
+
+        // Constant-time comparison (redundant but following security best practices)
+        if (!MessageDigest.isEqual(
+                hashedIncoming.getBytes(StandardCharsets.UTF_8),
+                user.getVerificationToken().getBytes(StandardCharsets.UTF_8))) {
+            throw new RuntimeException("Invalid verification token");
         }
 
         user.setVerificationStatus(VerificationStatus.VERIFIED);
@@ -126,23 +139,33 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with this email"));
 
-        String resetToken = UUID.randomUUID().toString();
-        user.setPasswordResetToken(resetToken);
+        String rawToken = UUID.randomUUID().toString();
+        String hashedToken = hashToken(rawToken);
+        user.setPasswordResetToken(hashedToken);
         user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(15));
         userRepository.save(user);
 
-        emailService.sendPasswordResetEmail(email, resetToken);
+        emailService.sendPasswordResetEmail(email, rawToken);
 
         return "Password reset link has been sent to your email (Check terminal logs for token in dev mode)";
     }
 
     @Transactional
     public String resetPassword(String token, String newPassword) {
-        User user = userRepository.findByPasswordResetToken(token)
+        String hashedIncoming = hashToken(token);
+        User user = userRepository.findByPasswordResetToken(hashedIncoming)
                 .orElseThrow(() -> new RuntimeException("Invalid or expired reset token"));
 
         if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Reset token has expired");
+        }
+
+        // Constant-time comparison
+        String storedHash = user.getPasswordResetToken();
+        if (!MessageDigest.isEqual(
+                storedHash.getBytes(StandardCharsets.UTF_8),
+                hashedIncoming.getBytes(StandardCharsets.UTF_8))) {
+            throw new RuntimeException("Invalid or expired reset token");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -165,5 +188,19 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    private String hashToken(String rawToken) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(rawToken.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder();
+            for (byte b : hashBytes) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 not available", e);
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.example.socialmedia.entity.Notification.NotificationType;
 import com.example.socialmedia.repository.*;
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class UserService {
     // ─── Profile ──────────────────────────────────────────────
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "profiles", key = "#email")
+    @Cacheable(value = "userProfiles", key = "#email")
     public UserProfileResponse getProfile(String email) {
         User user = getUserByEmail(email);
         UserInfo info = userInfoRepository.findByUser(user).orElse(null);
@@ -58,6 +59,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "userProfiles", key = "#targetId")
     public UserProfileResponse getOtherProfile(Long targetId, String requesterEmail) {
         User requester = getUserByEmail(requesterEmail);
         User target = userRepository.findById(targetId)
@@ -67,7 +69,7 @@ public class UserService {
     }
 
     @Transactional
-    @CacheEvict(value = "profiles", key = "#email")
+    @CacheEvict(value = "userProfiles", key = "#email", beforeInvocation = false)
     public UserProfileResponse updateProfile(String email, UserProfileRequest request) {
         User user = getUserByEmail(email);
         UserInfo info = userInfoRepository.findByUser(user).orElse(null);
@@ -103,7 +105,7 @@ public class UserService {
     }
 
     @Transactional
-    @CacheEvict(value = "profiles", key = "#email")
+    @CacheEvict(value = "userProfiles", key = "#email", beforeInvocation = false)
     public UserProfileResponse updateProfilePic(String email, String profilePicUrl) {
         User user = getUserByEmail(email);
         UserInfo info = userInfoRepository.findByUser(user).orElse(null);
@@ -123,7 +125,7 @@ public class UserService {
     }
 
     @Transactional
-    @CacheEvict(value = "profiles", key = "#email")
+    @CacheEvict(value = "userProfiles", key = "#email", beforeInvocation = false)
     public UserProfileResponse removeProfilePic(String email) {
         User user = getUserByEmail(email);
         UserInfo info = userInfoRepository.findByUser(user).orElse(null);
@@ -136,7 +138,7 @@ public class UserService {
     }
 
     @Transactional
-    @CacheEvict(value = "profiles", key = "#email")
+    @CacheEvict(value = "userProfiles", key = "#email", beforeInvocation = false)
     public UserProfileResponse updateProfileSettings(String email, UserProfileRequest request) {
         return updateProfile(email, request);
     }

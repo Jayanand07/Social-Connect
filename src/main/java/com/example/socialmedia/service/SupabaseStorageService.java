@@ -52,9 +52,12 @@ public class SupabaseStorageService {
         String originalName = file.getOriginalFilename();
         String extension = "";
         if (originalName != null && originalName.contains(".")) {
-            extension = originalName.substring(originalName.lastIndexOf("."));
+            extension = originalName
+                .substring(originalName.lastIndexOf("."))
+                .toLowerCase()
+                .replaceAll("[^.a-z0-9]", "");
         }
-        String filename = "posts/" + UUID.randomUUID() + extension;
+        String filename = "posts/" + java.util.UUID.randomUUID().toString() + extension;
 
         // Upload to Supabase Storage
         String uploadUrl = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + filename;

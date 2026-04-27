@@ -63,7 +63,15 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
         int currentCount = entry.count.incrementAndGet();
 
-        if (currentCount > requestsPerMinute) {
+        // Stricter rate limit for authentication endpoints to prevent brute force
+        String requestPath = request.getRequestURI();
+        boolean isAuthEndpoint = requestPath.startsWith("/api/auth/login")
+            || requestPath.startsWith("/api/auth/register")
+            || requestPath.startsWith("/api/auth/forgot-password")
+            || requestPath.startsWith("/api/auth/reset-password");
+        int effectiveLimit = isAuthEndpoint ? Math.min(requestsPerMinute, 10) : requestsPerMinute;
+
+        if (currentCount > effectiveLimit) {
             log.warn("Rate limit exceeded for IP: {} on endpoint: {} {}",
                     clientIp, request.getMethod(), request.getRequestURI());
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
@@ -91,12 +99,24 @@ public class RateLimitFilter extends OncePerRequestFilter {
         return path.startsWith("/actuator");
     }
 
+    // Trusted internal proxy CIDR prefixes — only trust X-Forwarded-For from these
+    private static final java.util.Set<String> TRUSTED_PROXY_PREFIXES = java.util.Set.of(
+        "10.", "172.16.", "172.17.", "172.18.", "172.19.", "172.20.",
+        "172.21.", "172.22.", "172.23.", "172.24.", "172.25.", "172.26.",
+        "172.27.", "172.28.", "172.29.", "172.30.", "172.31.", "192.168.", "127."
+    );
+
     private String getClientIp(HttpServletRequest request) {
-        String xff = request.getHeader("X-Forwarded-For");
-        if (xff != null && !xff.isEmpty()) {
-            return xff.split(",")[0].trim();
+        String remoteAddr = request.getRemoteAddr();
+        boolean isTrustedProxy = TRUSTED_PROXY_PREFIXES.stream()
+            .anyMatch(remoteAddr::startsWith);
+        if (isTrustedProxy) {
+            String xff = request.getHeader("X-Forwarded-For");
+            if (xff != null && !xff.isBlank()) {
+                return xff.split(",")[0].trim();
+            }
         }
-        return request.getRemoteAddr();
+        return remoteAddr;
     }
 
     /** Simple rate limit tracking per IP */
