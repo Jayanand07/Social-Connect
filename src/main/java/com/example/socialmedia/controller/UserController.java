@@ -147,4 +147,9 @@ public class UserController {
     public ResponseEntity<List<FollowUserResponse>> getBlockedUsers(Authentication authentication) {
         return ResponseEntity.ok(userService.getBlockedUsers(authentication.getName()));
     }
+
+    @GetMapping("/suggestions")
+    public ResponseEntity<List<FollowUserResponse>> getSuggestedUsers(Authentication authentication) {
+        return ResponseEntity.ok(userService.getSuggestedUsers(authentication.getName()));
+    }
 }

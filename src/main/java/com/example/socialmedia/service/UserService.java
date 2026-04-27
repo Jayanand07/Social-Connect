@@ -10,6 +10,7 @@ import com.example.socialmedia.repository.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -388,6 +389,15 @@ public class UserService {
         if (follower == null || following == null)
             return false;
         return followRepository.findByFollowerAndFollowing(follower, following).isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    public List<FollowUserResponse> getSuggestedUsers(String email) {
+        User user = getUserByEmail(email);
+        return userRepository.findSuggestedUsers(user.getId(), PageRequest.of(0, 5))
+                .stream()
+                .map(this::mapToFollowUserResponse)
+                .collect(Collectors.toList());
     }
 
     // ─── Helpers ──────────────────────────────────────────────
