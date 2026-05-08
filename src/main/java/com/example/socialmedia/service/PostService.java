@@ -98,7 +98,7 @@ public class PostService {
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
                 // Get followings
-                var followings = followRepository.findByFollower(user)
+                var followings = followRepository.findByFollowerId(user.getId())
                                 .stream().map(f -> f.getFollowing().getId()).toList();
 
                 // Include self in feed
@@ -295,7 +295,7 @@ public class PostService {
                         String type, Long actorId, Long resourceId, String content) {
                 try {
                     eventProducerService.sendNotification(new NotificationEvent(
-                            type, actorId, targetUserId, resourceId, resourceType, Instant.now()
+                            type, actorId, targetUserId, resourceId, resourceType, content, Instant.now()
                     ));
                 } catch (Exception e) {
                         // Log but don't fail - Kafka is optional for notifications

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.listener.DefaultErrorHandler;
-import org.springframework.util.backoff.ExponentialBackOffWithMaxRetries;
+import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 public class KafkaTopicConfig {
@@ -44,11 +44,9 @@ public class KafkaTopicConfig {
 
     @Bean
     public DefaultErrorHandler kafkaErrorHandler() {
-        ExponentialBackOffWithMaxRetries backoff = new ExponentialBackOffWithMaxRetries(3);
-        backoff.setInitialInterval(1000L);
-        backoff.setMultiplier(2.0);
-        backoff.setMaxInterval(10000L);
-        return new DefaultErrorHandler(backoff);
+        FixedBackOff backOff = new FixedBackOff(1000L, 3L);
+        return new DefaultErrorHandler(backOff);
     }
 }
+
 

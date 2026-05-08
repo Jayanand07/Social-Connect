@@ -15,5 +15,7 @@ public class NotificationEvent {
     private Long targetUserId;    // who should be notified
     private Long resourceId;      // postId / commentId etc.
     private String resourceType;  // "POST", "COMMENT", "STORY", "GROUP_MESSAGE"
+    private String content;       // text content of the notification
     private Instant timestamp;
 }
+
